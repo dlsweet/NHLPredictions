@@ -18,6 +18,8 @@ library(scales)
 library(plyr)
 library(rvest)
 library(magrittr)
+library(gridExtra)
+library(grid)
 suppressPackageStartupMessages(library(googleVis))
 }
 
@@ -45,6 +47,8 @@ nhlscores <- cbind("Date" = rep(Sys.Date()-1, nrow(nhlscores)), nhlscores)
 
 Schedule1718$Date <- as.Date(Schedule1718$Date, "%B %d, %Y")
 nhlscores$Date <- as.Date(nhlscores$Date, "%B %d, %Y")
+
+nhlscores$OT <- substr(nhlscores$OT, start = 1, stop = 2)
 
 for(i in 1:nrow(Schedule1718)){
   for(j in 1:nrow(nhlscores)){
@@ -565,6 +569,7 @@ Standings1718 = Standings1718[order(-Standings1718[, 8], Standings1718[, 4],
  TodaysPredictions = rename(TodaysPredictions, c("P.H.WINS." = "Probability Home Team Wins", "P.A.WINS." = "Probability Away Team Wins"))
  Table <- gvisTable(TodaysPredictions, options=list(title="Today's Predictions Given the Complete History of the NHL"))
  plot(Table)
+ grid.table(TodaysPredictions)
 end = Sys.time()
 end-start
 
