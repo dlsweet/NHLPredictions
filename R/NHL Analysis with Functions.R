@@ -1,11 +1,10 @@
 ##################################################################
 ## Historical Analysis as a Function for Readability            ##
 ## No Overtimes between 1943 - 1983 for Regular Season          ##
+## 2004-2005 Season Cancelled Due to Player Strike              ##
 ## Shootouts instituted in 2005-2006 Season                     ##
 ## This analysis does not include preseason or exhibition games ##
 ##################################################################
-
-
 
 memory.limit(size=70000)
 start = Sys.time()
