@@ -31,7 +31,7 @@ Prop.Find <- function(Schedule){
 }
 
 Prop.Find(Schedule191718)
-Prop.Find(Schedule1819)
+Prop.Find(Schedule191819)
 Prop.Find(Schedule1920)
 
 Prop.Find(Schedule2021)
@@ -141,3 +141,7 @@ Prop.Find(Schedule1415)
 Prop.Find(Schedule1516)
 Prop.Find(Schedule1617)
 Prop.Find(Schedule1718)
+Prop.Find(Schedule1819)
+
+
+Correct / Total * 100

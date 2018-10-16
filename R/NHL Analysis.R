@@ -5,8 +5,6 @@
 ## This analysis does not include preseason or exhibition games ##
 ##################################################################
 
-
-
 memory.limit(size=70000)
 start = Sys.time()
 
@@ -18,13 +16,15 @@ library(scales)
 library(plyr)
 library(rvest)
 library(magrittr)
+library(gridExtra)
+library(grid)
 suppressPackageStartupMessages(library(googleVis))
 }
 
 successrate <- c()
 
-load(file = "Data/Schedule1718.Rda")
-load(file = "Data/Standings1617.Rda")
+load(file = "Data/Schedule1819.Rda")
+load(file = "Data/Standings1718.Rda")
 
 ## Webscraping for Last Nights Scores
 
@@ -43,37 +43,39 @@ nhlscores <- nhlscores[c("Home", "Visitor", "GH", "GA", "OT")]
 
 nhlscores <- cbind("Date" = rep(Sys.Date()-1, nrow(nhlscores)), nhlscores)
 
-Schedule1718$Date <- as.Date(Schedule1718$Date, "%B %d, %Y")
+Schedule1819$Date <- as.Date(Schedule1819$Date, "%B %d, %Y")
 nhlscores$Date <- as.Date(nhlscores$Date, "%B %d, %Y")
 
-for(i in 1:nrow(Schedule1718)){
+nhlscores$OT <- substr(nhlscores$OT, start = 1, stop = 2)
+
+for(i in 1:nrow(Schedule1819)){
   for(j in 1:nrow(nhlscores)){
-    if(Schedule1718[i, 1]==nhlscores[j, 1]){
-      if(Schedule1718[i, 2]==nhlscores[j, 2]){
-        Schedule1718[i, 4] = nhlscores[j, 4]
-        Schedule1718[i, 5] = nhlscores[j, 5] 
+    if(Schedule1819[i, 1]==nhlscores[j, 1]){
+      if(Schedule1819[i, 2]==nhlscores[j, 2]){
+        Schedule1819[i, 4] = nhlscores[j, 4]
+        Schedule1819[i, 5] = nhlscores[j, 5] 
         if(nhlscores[j, 6]=="OT"){
-          Schedule1718[i, 7] = "Y"
-          Schedule1718[i, 8] = "N"
+          Schedule1819[i, 7] = "Y"
+          Schedule1819[i, 8] = "N"
         }
         else if(nhlscores[j, 6]=="SO"){
-          Schedule1718[i, 7]="Y"
-          Schedule1718[i, 8]="Y"
+          Schedule1819[i, 7]="Y"
+          Schedule1819[i, 8]="Y"
         }
         else{
-          Schedule1718[i, 7]="N"
-          Schedule1718[i, 8]="N"
+          Schedule1819[i, 7]="N"
+          Schedule1819[i, 8]="N"
         }
       }
     }
   }
 }
 
-Schedule1718$GA <- as.numeric(Schedule1718$GA)
-Schedule1718$GH <- as.numeric(Schedule1718$GH)
+Schedule1819$GA <- as.numeric(Schedule1819$GA)
+Schedule1819$GH <- as.numeric(Schedule1819$GH)
 
 ## Save scores
-save(Schedule1718, file = "Data/Schedule1718.Rda")
+save(Schedule1819, file = "Data/Schedule1819.Rda")
 
 # Set parameter Values
 homeice <<- 20 # Home Ice Advantage
@@ -533,29 +535,29 @@ return(list(Standings=Standings, Schedule=Sch))
 }
 
 
-output <- analysis(Schedule1718, Standings1617)
-Standings1718 <<- output$Standings
-Schedule1718 <<- output$Schedule
+output <- analysis(Schedule1819, Standings1718)
+Standings1819 <<- output$Standings
+Schedule1819 <<- output$Schedule
 rm(output)
 
        
 ## Dropping Defunct Teams
 dropped <- c()
-for(i in c(1:nrow(Standings1718))){
-  if(Standings1718[i, 4]==0){
+for(i in c(1:nrow(Standings1819))){
+  if(Standings1819[i, 4]==0){
     dropped <- append(dropped, i)
   }
 }
-Standings1718 = Standings1718[-dropped,]
-Standings1718 = Standings1718[order(-Standings1718[, 8], Standings1718[, 4], 
-                                    -Standings1718[, 9]),]
+Standings1819 = Standings1819[-dropped,]
+Standings1819 = Standings1819[order(-Standings1819[, 8], Standings1819[, 4], 
+                                    -Standings1819[, 9]),]
 
 # Creating a Pop-up Table for Tonight's Games
  TodaysPredictions = data.frame()
  
- for(i in c(1:nrow(Schedule1718))){
-   if(Schedule1718[i, 1] == Sys.Date()){
-     TodaysPredictions = rbind(TodaysPredictions, Schedule1718[i,])
+ for(i in c(1:nrow(Schedule1819))){
+   if(Schedule1819[i, 1] == Sys.Date()){
+     TodaysPredictions = rbind(TodaysPredictions, Schedule1819[i,])
    }
  }
  
@@ -565,6 +567,7 @@ Standings1718 = Standings1718[order(-Standings1718[, 8], Standings1718[, 4],
  TodaysPredictions = rename(TodaysPredictions, c("P.H.WINS." = "Probability Home Team Wins", "P.A.WINS." = "Probability Away Team Wins"))
  Table <- gvisTable(TodaysPredictions, options=list(title="Today's Predictions Given the Complete History of the NHL"))
  plot(Table)
+ grid.table(TodaysPredictions)
 end = Sys.time()
 end-start
 
@@ -605,5 +608,5 @@ save(MontrealWanderers, file = "Data/MontrealWanderers.Rda")
 save(PhiladelphiaQuakers, file = "Data/PhiladelphiaQuakers.Rda")
 save(St.LouisEagles, file = "Data/St.LouisEagles.Rda")
 save(VegasGoldenKnights, file = "Data/VegasGoldenKnights.Rda")
-save(Schedule1718, file = "Data/Schedule1718.Rda")
+save(Schedule1819, file = "Data/Schedule1819.Rda")
 

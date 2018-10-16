@@ -25,11 +25,11 @@ successrate <- c()
 
 
             {
-            nhlwb<-loadWorkbook("F:/NHL Stats.xlsx")
+            nhlwb<-loadWorkbook("U:/Personal/NHL Stats.xlsx")
             Standings191718 <- readWorksheet(nhlwb, sheet="Standings")
             
             Schedule191718 <- readWorksheet(nhlwb, sheet="Schedule1718")
-            Schedule1819 <- readWorksheet(nhlwb, sheet="Schedule1819")
+            Schedule191819 <- readWorksheet(nhlwb, sheet="Schedule1819")
             Schedule1920 <- readWorksheet(nhlwb, sheet="Schedule1920")
             Schedule2021 <- readWorksheet(nhlwb, sheet="Schedule2021")
             Schedule2122 <- readWorksheet(nhlwb, sheet="Schedule2122")
@@ -129,6 +129,7 @@ successrate <- c()
             Schedule1516 <- readWorksheet(nhlwb, sheet="Schedule1516")
             Schedule1617 <- readWorksheet(nhlwb, sheet="Schedule1617")
             Schedule1718 <- readWorksheet(nhlwb, sheet="Schedule201718")
+            Schedule1819 <- readWorksheet(nhlwb, sheet="Schedule201819")
             }
             
             # Set parameter Values
@@ -741,15 +742,7 @@ successrate <- c()
                 VegasGoldenKnights <<- rbind(VegasGoldenKnights, Sch[i, c(1, 12, 16)])
               }
               ## This is the end of the new code!
-                
 
-                
-                
-                
-                
-                
-                
-                
                               }
               
           
@@ -762,10 +755,10 @@ successrate <- c()
             }
             
             # Output Statements
-            output <- analysis(Schedule1819, Standings191718)
-            Standings1819 <- output$Standings
-            Schedule1819 <- output$Schedule
-            output <- analysis(Schedule1920, Standings1819)
+            output <- analysis(Schedule191819, Standings191718)
+            Standings191819 <- output$Standings
+            Schedule191819 <- output$Schedule
+            output <- analysis(Schedule1920, Standings191819)
             Standings1920 <- output$Standings
             Schedule1920 <- output$Schedule
             output <- analysis(Schedule2021, Standings1920)
@@ -1059,6 +1052,9 @@ successrate <- c()
             output <- analysis(Schedule1718, Standings1617)
             Standings1718 <<- output$Standings
             Schedule1718 <<- output$Schedule
+            output <- analysis(Schedule1819, Standings1718)
+            Standings1819 <<- output$Standings
+            Schedule1819 <<- output$Schedule
             rm(output)
             
             Correct <<- 0
@@ -1094,7 +1090,7 @@ successrate <- c()
             }
             
             Prop.Find(Schedule191718)
-            Prop.Find(Schedule1819)
+            Prop.Find(Schedule191819)
             Prop.Find(Schedule1920)
             
             Prop.Find(Schedule2021)
@@ -1204,27 +1200,28 @@ successrate <- c()
             Prop.Find(Schedule1516)
             Prop.Find(Schedule1617)
             Prop.Find(Schedule1718)
+            Prop.Find(Schedule1819)
   
 
 
        
 ## Dropping Defunct Teams
 dropped <- c()
-for(i in c(1:nrow(Standings1718))){
-  if(Standings1718[i, 4]==0){
+for(i in c(1:nrow(Standings1819))){
+  if(Standings1819[i, 4]==0){
     dropped <- append(dropped, i)
   }
 }
-Standings1718 = Standings1718[-dropped,]
-Standings1718 = Standings1718[order(-Standings1718[, 8], Standings1718[, 4], 
-                                    -Standings1718[, 9]),]
+Standings1819 = Standings1819[-dropped,]
+Standings1819 = Standings1819[order(-Standings1819[, 8], Standings1819[, 4], 
+                                    -Standings1819[, 9]),]
 
 # Creating a Pop-up Table for Tonight's Games
  TodaysPredictions = data.frame()
  
- for(i in c(1:nrow(Schedule1718))){
-   if(Schedule1718[i, 1] == Sys.Date()){
-     TodaysPredictions = rbind(TodaysPredictions, Schedule1718[i,])
+ for(i in c(1:nrow(Schedule1819))){
+   if(Schedule1819[i, 1] == Sys.Date()){
+     TodaysPredictions = rbind(TodaysPredictions, Schedule1819[i,])
    }
  }
  
