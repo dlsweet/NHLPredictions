@@ -48,7 +48,11 @@ nhlscores$Date <- as.Date(nhlscores$Date, "%B %d, %Y")
 
 nhlscores$OT <- substr(nhlscores$OT, start = 1, stop = 2)
 
+<<<<<<< HEAD
 for(i in 1:nrow(Schedule1819)){
+=======
+for(i in 1:nrow(Schedule1718)){
+>>>>>>> master
   for(j in 1:nrow(nhlscores)){
     if(Schedule1819[i, 1]==nhlscores[j, 1]){
       if(Schedule1819[i, 2]==nhlscores[j, 2]){
